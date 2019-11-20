@@ -15,6 +15,12 @@ RSpec.describe P6 do
 		@tofu = Alimentos.new("tofu",8.0,1.9,4.8,2.0,2.2)
 		@lentejas = Alimentos.new("lentejas",23.5,52.0,1.4,0.4,3.4)
 		@nuez = Alimentos.new("nuez",20.0,21.0,54.0,0.3,7.9)
+		@nodo1 = Nodo.new(@chocolate,nil,nil)
+		@nodo2 = Nodo.new(@leche,nil,nil)
+		@nodo3 = Nodo.new(@queso,@nodo1,nil)
+		@nodo4 = Nodo.new(@camarones,@nodo2,@nodo3)
+		@nodo5 = Nodo.new(@lentejas,nil,@nodo4)
+		@nodo6 = Nodo.new(@nuez,nil,nil)
 	end
 
 		context "Debe existir" do
@@ -65,13 +71,20 @@ RSpec.describe P6 do
 
 	context "Se calcula correctamente el impacto ambiental diario" do
 		it "de un hombre de 20-39 años" do
-			expect(@carne_vaca.val_energetico + @salmon.val_energetico + @cerveza.val_energetico + @queso.val_energetico + 2* @huevos.val_energetico).to eq(3000)
+			expect(@carne_vaca.val_energetico + @salmon.val_energetico + @cerveza.val_energetico + @queso.val_energetico + 2* @huevos.val_energetico).to eq(1043.7)
 
 		end
 
 		it "de una mujer de 20-39 años" do
-			expect(@lentejas.val_energetico + @camarones.val_energetico + @chocolate.val_energetico).to eq(2700)
+			expect(@lentejas.val_energetico + @camarones.val_energetico + @chocolate.val_energetico).to eq(875.6)
 		end
 
+	end
+	context "Debe existir" do 
+		it "un nodo de la lista con sus datos, su siguiente, y su previo" do 
+			expect(@nodo1.val).to eq(@chocolate)
+			expect(@nodo4.sig).to eq(@nodo2)
+			expect(@nodo1.ant).to eq nil
+		end
 	end
 end
