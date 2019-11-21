@@ -97,4 +97,17 @@ RSpec.describe P6 do
 		end
 
 	end
+	context "Se puede insertar" do
+		it "un elemento en la lista" do
+			expect(@lista.size).to eq(1)
+			@lista.push(@nodo6)
+			expect(@lista.size).to eq(2)
+		end
+		it "varios elementos en una lista" do
+			expect(@lista.size).to eq(2)
+			@lista.push(@nodo5)
+			@lista.push(@nodo4)
+			expect(@lista.size).to eq(4)
+		end
+	end
 end
