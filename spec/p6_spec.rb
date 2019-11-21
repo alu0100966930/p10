@@ -15,12 +15,16 @@ RSpec.describe P6 do
 		@tofu = Alimentos.new("tofu",8.0,1.9,4.8,2.0,2.2)
 		@lentejas = Alimentos.new("lentejas",23.5,52.0,1.4,0.4,3.4)
 		@nuez = Alimentos.new("nuez",20.0,21.0,54.0,0.3,7.9)
+		
+		
 		@nodo1 = Nodo.new(@chocolate,nil,nil)
 		@nodo2 = Nodo.new(@leche,nil,nil)
 		@nodo3 = Nodo.new(@queso,@nodo1,nil)
 		@nodo4 = Nodo.new(@camarones,@nodo2,@nodo3)
 		@nodo5 = Nodo.new(@lentejas,nil,@nodo4)
 		@nodo6 = Nodo.new(@nuez,nil,nil)
+		
+		@lista = Lista.new()
 	end
 
 		context "Debe existir" do
@@ -86,5 +90,11 @@ RSpec.describe P6 do
 			expect(@nodo4.sig).to eq(@nodo2)
 			expect(@nodo1.ant).to eq nil
 		end
+		it "una lista con su cabeza y su cola (Se inserta un nodo en la lista" do 
+			@lista.push(@nodo3)
+			expect(@lista.head).to eq(@nodo3)
+			expect(@lista.tail).to eq(@nodo3)
+		end
+
 	end
 end

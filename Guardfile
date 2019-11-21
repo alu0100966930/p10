@@ -41,7 +41,8 @@ guard :rspec, cmd: "bundle exec rspec" do
   dsl = Guard::RSpec::Dsl.new(self)
 
   # Feel free to open issues for suggestions and improvements
-
+  watch(%r{^lib/p6/.+\.rb})
+  watch(%r{'lib/p6.rb'})
   # RSpec files
   rspec = dsl.rspec
   watch(rspec.spec_helper) { rspec.spec_dir }
