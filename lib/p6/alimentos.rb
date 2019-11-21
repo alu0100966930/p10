@@ -56,4 +56,25 @@ class Lista
 		@size = @size+1
 	end
 
+	def pop_head()
+		if(size==0)
+			puts "Lista vacía, no hay nada que extraer"
+		else
+			(@head.sig).ant = nil
+			@head = @head.sig
+			@size = @size - 1
+		end
+	end
+
+	def pop_tail()
+		if(size==0)
+			puts "Lista vacía, no hay nada que extraer"
+		else
+			(@tail.ant).sig = nil
+			@tail = @tail.ant
+			@size = @size - 1
+		end
+
+	end
+
 end

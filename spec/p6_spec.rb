@@ -25,6 +25,13 @@ RSpec.describe P6 do
 		@nodo6 = Nodo.new(@nuez,nil,nil)
 		
 		@lista = Lista.new()
+
+		@española = Lista.new()
+		@vasca = Lista.new()
+		@vegetaria = Lista.new()
+		@vegetaliana = Lista.new()
+		@lo_carne = Lista.new()
+
 	end
 
 		context "Debe existir" do
@@ -110,4 +117,23 @@ RSpec.describe P6 do
 			expect(@lista.size).to eq(4)
 		end
 	end
+	context "Se puede extraer" do
+		it "el primer elemento de la lista" do 
+			expect(@lista.size).to eq(4)
+			expect(@lista.head).to eq(@nodo4)
+			@lista.pop_head()
+			expect(@lista.size).to eq(3)
+			expect(@lista.head).to eq(@nodo5)
+
+		end
+		it "el último elemento de la lista" do
+			expect(@lista.size).to eq(3)
+			expect(@lista.tail).to eq(@nodo3)
+			@lista.pop_tail()
+			expect(@lista.size).to eq(2)
+			expect(@lista.tail).to eq(@nodo6)
+		end
+	end
+
+
 end
