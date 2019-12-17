@@ -297,4 +297,13 @@ class Ambiental < Plato
 		#nombre <=> compara.nombre
 		huella_nutricional <=> compara.huella_nutricional
 	end
+
+	def incrementar_precio (v)
+		p = Array.new
+		v.each do |element|
+			p.push(element * huella_nutricional)
+		end 
+		return p
+	end
+
 end
