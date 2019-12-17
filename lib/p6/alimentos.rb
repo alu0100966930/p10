@@ -268,7 +268,33 @@ class Ambiental < Plato
 		return form
 	end
 
+	def indice_energia
+		if(get_gas < 800)
+			return 1
+		elsif (get_gas < 1200)
+			return 2
+		else 
+			return 3
+		end
+	end
+
+	def huella_carbono
+		if (get_VCT < 670)
+			return 1
+		elsif (get_VCT < 830)
+			return 2
+		else 
+			return 3
+		end
+	end
+
+	def huella_nutricional
+		return (indice_energia + huella_carbono)/2
+	end
+
+
 	def <=>(compara)
-		nombre <=> compara.nombre
+		#nombre <=> compara.nombre
+		huella_nutricional <=> compara.huella_nutricional
 	end
 end
