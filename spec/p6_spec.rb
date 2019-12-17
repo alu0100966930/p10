@@ -173,5 +173,8 @@ RSpec.describe P6 do
 		it "mayor huella nutricional" do 
 			expect(@menu1.max).to eq(@ambiental1)
 		end
+		it "incrementar el precio" do 
+			expect(@menu1.max.incrementar_precio(@precio1)).to eq([19.9, 11.0])
+		end
 	end
 end
