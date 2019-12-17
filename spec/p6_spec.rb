@@ -15,67 +15,53 @@ RSpec.describe P6 do
 		@tofu = Alimentos.new("tofu",8.0,1.9,4.8,2.0,2.2)
 		@lentejas = Alimentos.new("lentejas",23.5,52.0,1.4,0.4,3.4)
 		@nuez = Alimentos.new("nuez",20.0,21.0,54.0,0.3,7.9)
-		
-		
-		@nodo1 = Nodo.new(@chocolate,nil,nil)
-		@nodo2 = Nodo.new(@leche,nil,nil)
-		@nodo3 = Nodo.new(@queso,@nodo1,nil)
-		@nodo4 = Nodo.new(@camarones,@nodo2,@nodo3)
-		@nodo5 = Nodo.new(@lentejas,nil,@nodo4)
-		@nodo6 = Nodo.new(@nuez,nil,nil)
-		
-		@lista = Lista.new()
+			
+		@lista1 = Lista.new()
+		@lista1.push(@chocolate)
 
-		@española = Lista.new()
-		@vasca = Lista.new()
-		@vegetaria = Lista.new()
-		@vegetaliana = Lista.new()
-		@lo_carne = Lista.new()
+		@plato1 = Plato.new("plato1")
+		@plato1.insert_alimento(@chocolate)
+		@plato1.insert_gramos(200)
+		@plato1.insert_alimento(@carne_vaca)
+		@plato1.insert_gramos(500)
+
+		@ambiental1 = Ambiental.new("ambiental1")
+		@ambiental1.insert_alimento(@chocolate)
+		@ambiental1.insert_gramos(200)
+		@ambiental1.insert_alimento(@carne_vaca)
+		@ambiental1.insert_gramos(500)
+
+		@ambiental2 = Ambiental.new("ambiental1")
 
 	end
 
-		context "Debe existir" do
-		it "un nombre para cada alimento" do
-			expect(@carne_vaca.alimento).to eq("carne de vaca")
-			expect(@salmon.alimento).to eq("salmon")
+	context "Los alimentos deben" do
+		it "tener un nombre" do
 			expect(@chocolate.alimento).to eq("chocolate")
 		end
-		it "la cantidad de emisión de gases de efecto invernadero" do
-			expect(@carne_cordero.gei).to eq(20.0)
-			expect(@cerdo.gei).to eq(7.6)
-			expect(@queso.gei).to eq(11.0)
-		end
-		it "la cantidad de terreno utilizado" do
-			expect(@camarones.terreno).to eq(2.0)
-			expect(@cerveza.terreno).to eq(0.22)
-			expect(@huevos.terreno).to eq(5.7)
+		it "ser comparables con mixin" do
+			expect(@chocolate <=> @chocolate).to eq(0)
 		end
 	end
-
 
 	context "Existe un metodo para" do
 		it "obtener el nombre del alimento" do
 			expect(@cafe.get_alimento).to eq("cafe")
-			expect(@tofu.get_alimento).to eq("tofu")
 		end
 
 		it "obtener la emision de gases de efecto invernadero" do
 			expect(@lentejas.get_gases).to eq(0.4)
-			expect(@nuez.get_gases).to eq(0.3)
 		end
 		it "obtener el terreno utilizado" do
 			expect(@lentejas.get_terreno).to eq(3.4)
-			expect(@nuez.get_terreno).to eq(7.9)
 		end
 
 		it "obtener el alimento formateado" do
 			expect(@salmon.to_s).to eq('salmon: 19.9, 0.0, 13.6, 6.0, 3.7')
-			expect(@queso.to_s).to eq('queso: 25.0, 1.3, 33.0, 11.0, 41.0')
 		end
 
 		it "obtener el valor energético de un alimento" do 
 			expect(@salmon.val_energetico).to eq(202)
-			expect(@queso.val_energetico).to eq(402.2)
 		end
 
 	end
@@ -91,49 +77,82 @@ RSpec.describe P6 do
 		end
 
 	end
-	context "Debe existir" do 
-		it "un nodo de la lista con sus datos, su siguiente, y su previo" do 
-			expect(@nodo1.val).to eq(@chocolate)
-			expect(@nodo4.sig).to eq(@nodo2)
-			expect(@nodo1.ant).to eq nil
+	context "Las listas deben " do 
+		it "ser enumerables" do 
+			expect(@lista1.count).to eq(1)
 		end
-		it "una lista con su cabeza y su cola (Se inserta un nodo en la lista" do 
-			@lista.push(@nodo3)
-			expect(@lista.head).to eq(@nodo3)
-			expect(@lista.tail).to eq(@nodo3)
+		it "tener tamaño" do 
+			expect(@lista1.size).to eq(1)
 		end
 
 	end
-	context "Se puede insertar" do
-		it "un elemento en la lista" do
-			expect(@lista.size).to eq(1)
-			@lista.push(@nodo6)
-			expect(@lista.size).to eq(2)
+
+
+	context "Los platos deben" do 
+		it "tener nombre" do 
+			expect(@plato1.nombre).to eq("plato1")
 		end
-		it "varios elementos en una lista" do
-			expect(@lista.size).to eq(2)
-			@lista.push(@nodo5)
-			@lista.push(@nodo4)
-			expect(@lista.size).to eq(4)
+
+		it "tener un conjunto de alimentos" do 
+			expect(@plato1.get_alimentos.size).to eq(2)
+		end
+
+		it "tener un conjunto de gramos" do 
+			expect(@plato1.get_gramos.size).to eq(2)
+		end
+		
+		it "porcentaje de proteinas" do 
+			expect(@plato1.por_proteinas).to eq(116.1)
+		end
+
+		it "porcetaje de lípidos" do 
+			expect(@plato1.por_lipidos).to eq(75.5)
+		end
+
+		it "porcentaje de carbohidratos" do 
+			expect(@plato1.por_carbohidratos).to eq(94.0)
+		end
+
+		it "el valor calórico total" do
+			expect(@plato1.get_VCT).to eq(10639.3)
+		end
+
+		it "plato formateado" do 
+			expect(@plato1.to_s).to eq("El plato contiene : carne de vaca chocolate ")
 		end
 	end
-	context "Se puede extraer" do
-		it "el primer elemento de la lista" do 
-			expect(@lista.size).to eq(4)
-			expect(@lista.head).to eq(@nodo4)
-			@lista.pop_head()
-			expect(@lista.size).to eq(3)
-			expect(@lista.head).to eq(@nodo5)
 
+	context "La clase heredada" do 
+		it " emisiones diarias de gases"  do
+			expect(@ambiental1.get_gas).to eq(254.6)
 		end
-		it "el último elemento de la lista" do
-			expect(@lista.size).to eq(3)
-			expect(@lista.tail).to eq(@nodo3)
-			@lista.pop_tail()
-			expect(@lista.size).to eq(2)
-			expect(@lista.tail).to eq(@nodo6)
+
+		it "terreno" do 
+			expect(@ambiental1.get_terreno).to eq(826.8)
+		end
+
+		it "eficiencia energética formateada" do
+			expect(@ambiental1.to_s).to eq("Gases: 254.6 Terreno: 826.8")
+		end
+
+		it "clase, tipo y jerarquía" do 
+			expect(@ambiental1.class.to_s).to eq("Ambiental")
+			expect(@ambiental1.instance_of? Ambiental).to eq(true)
+		end
+
+		it "Es comparable" do 
+			expect(@ambiental1 <=> @ambiental2).to eq(0)
 		end
 	end
 
-
+	context "Para la huella nutricional" do 
+		it "calculamos el índice de impacto de energía" do
+			expect(@ambiental1.indice_energia).to eq(1)
+		end
+		it "calculamos el índice de huella de carbono" do 
+			expect(@ambiental.huella_carbono).to eq(3)
+		end
+		it "la HUELLA NUTRICIONAL" do 
+			expect(@ambiental1.huella_nutricional).to eq(2)
+		end
 end
