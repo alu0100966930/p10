@@ -72,7 +72,20 @@ RSpec.describe P6 do
 			precio 9.90
 		end
 
-	end       
+	end
+
+	context "Que el DSL funcione" do 
+		it "con los platos" do 
+			expect(@plate1.nombre).to eq("Lentejas")
+			expect(@plate1.get_gramos.tail.val).to eq("500")
+			expect(@plate1.get_alimentos.size).to eq(1)
+			expect(@plate1.get_alimentos.head.val.alimento).to eq("no se")
+		end
+
+		it "con los menus" do 
+			expect(@menu2.nombre).to eq("Primer menú")
+		end
+	end	
 
 
 	context "Los alimentos deben" do
@@ -81,6 +94,9 @@ RSpec.describe P6 do
 		end
 		it "ser comparables con mixin" do
 			expect(@chocolate <=> @chocolate).to eq(0)
+			expect(@chocolate < @huevos).to eq(true)
+			expect(@chocolate > @nuez).to eq(false)
+			expect(@chocolate == @chocolate).to eq(true)
 		end
 	end
 
