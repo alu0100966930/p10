@@ -148,20 +148,7 @@ class Plato
 		@listaGr = Lista.new
 		@v = 0
 
-		if block_given? 
-			if block.arity == 1
-				yield self
-			else
-				instance_eval(&block)
-			end
-		end
 	end
-
-	def ingredient(aliment, options = {})
-		insert_alimento(aliment)
-		insert_gramos("#{options[:amount]}")
-	end
-
 
 	#Inserta un alimento al plato
 	def insert_alimento(alimento)
@@ -387,6 +374,110 @@ class Menu
 	end
 
 	def to_s
-		@platos.collect { |x| x.to_s}
+		preciototal = 0
+		@precios.collect { |x| preciototal = preciototal+x}
+		output = "#{@nombre}"
+		output << " = #{preciototal}€"
+		output << "Contiene: "
+		@platos.zip(@precios).each do |x,y|
+			output << "#{x.nombre} = #{y}€"
+		end
+		output
 	end
 end
+
+class PlatoDSL
+
+	attr_accessor :nombre, :listaAl, :listaGr
+
+	def initialize(name, &block)
+		@nombre = name
+		@listaAl =  Array.new
+		@listaGr = Array.new
+
+		if block_given?
+			if block.arity == 1
+				yield self
+			else
+			instance_eval(&block)
+			end
+		end
+	end
+
+	def ingredient(aliment, options = {})
+		@listaAl.push(aliment)
+	end
+	
+	def quantity(gramos)
+		@listaGr.push(gramos)
+	end
+ 	
+	def por_proteinas
+		p = 0
+		i = 0
+		j = 0
+		@listaGr.each do |gramos|
+			gr = gramos
+			i = i + 1
+			@listaAl.each do |element|
+				j = j + 1
+				if(i == j)
+					p = p + gr*element.get_proteina/100
+				end
+			end
+			j = 0
+		end 
+		return p
+	end
+
+	def por_lipidos
+		l = 0
+		i = 0
+		j = 0
+		@listaGr.each do |gramos|
+			gr  = gramos 
+			i = i + 1
+			@listaAl.each do |element|
+				j = j + 1
+				if ( i ==j )
+					l = l + gr*element.get_lipido/100
+				end
+			end
+			j = 0 
+		end 
+		return l
+	end
+	def por_carbohidratos
+		c = 0
+		i = 0
+		j = 0
+		@listagr.each do |gramos|
+			gr = gramos
+			i = i + 1
+			@listaAl.each do |element|
+				j = j + 1
+				if (i == j)
+					c = c+ gr*element.get_carbohidrato/100
+				end 
+			end
+			j = 0 
+		end
+		return c
+	end
+	def get_VCT
+		total = 0
+		@listaGr.each do |gramos|
+			total = total + gramos
+		end
+		prot = (por_proteinas*total)/100
+		lip = (por_lipidos*total)/100
+		car = (por_carbohidratos*total)/100
+		@v = ((prot*4)+(lip*9)+(car*4))
+		return @v
+	end
+
+	def to_s
+		@listaAl.collect { |x| x.alimento}
+		end
+end
+		
