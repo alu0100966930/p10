@@ -46,23 +46,36 @@ RSpec.describe P6 do
 		@precio1.push(9.95)
 		@precio1.push(5.5)
 
-		@plate1 = Plato.new("Lentejas") do 
+		@plate1 = PlatoDSL.new("lentejas") do 
 			lentejas = Alimentos.new("lentejas", 23.5, 52.0, 1.4, 0.4, 3.4)
-			ingredient @lentejas, :amount => 500
+			ingredient @lentejas
+			quantity 500
 		end
 
-		@plate2 = Plato.new("Salmón") do 
-			ingredient @salmon, :amount => 250
+		@plate2 = Plato.new("salmón con tofu") do
+			salmon = Alimentos.new("salmon", 19.9, 0.0, 13.6, 6.0, 3.7)
+			tofu = Alimentos.new("tofu", 8.0, 1.9, 4.8, 2.0, 2.2)	
+			ingredient @salmon
+			quantity 150
+			ingredient @tofu
+			quantity 150
 		end
 
 		@menu2 = Menu.new("Primer menú") do 
-			primerPlato = Plato.new("Lentejas") do
-				ingredient @lentejas, :amount => 200
+			primerPlato = PlatoDSL.new("lentejas") do
+			lentejas = Alimentos.new("lentejas", 23.5, 52.0, 1.4, 0.4, 3.4)
+			ingredient lentejas
+			quantity 300
 			end
 
-			segundoPlato = Plato.new("Salmón y tofu") do 
-				ingredient @salmon, :amount => 150
-				ingredient @tofu, :amount => 100
+			segundoPlato = Plato.new("salmón con tofu") do 
+				salmon = Alimentos.new("salmon", 19.9, 0.0, 13.6, 6.0, 3.7)
+				tofu = Alimentos.new("tofu", 8.0, 1.9, 4.8, 2.0, 2.2)
+				
+				ingredient @salmon
+				quantity 200
+				ingredient @tofu
+				quantity 150
 			end
 
 			component primerPlato
@@ -76,14 +89,13 @@ RSpec.describe P6 do
 
 	context "Que el DSL funcione" do 
 		it "con los platos" do 
-			expect(@plate1.nombre).to eq("Lentejas")
-			expect(@plate1.get_gramos.tail.val).to eq("500")
-			expect(@plate1.get_alimentos.size).to eq(1)
-			expect(@plate1.get_alimentos.head.val.alimento).to eq("no se")
+			expect(@plate1.nombre).to eq("lentejas")
+			expect(@plate1.get_VCT).to eq(25)
 		end
 
 		it "con los menus" do 
 			expect(@menu2.nombre).to eq("Primer menú")
+			expect(@menu2.to_s).to eq("Primer menú = 14.9€Contiene: lentejas = 5.0€salmón con tofu = 9.9€")
 		end
 	end	
 
