@@ -139,14 +139,29 @@ end
 
 #CLASE PLATP
 class Plato
-	attr_accessor :nombre, :listaAl
+	attr_accessor :nombre, :listaAl, :listaGr, :v
 
 	#Inicializa tanto la lista de alimentos como de gramos de cada para cada plato
-	def initialize(name)
+	def initialize(name, &block)
 		@nombre = name
 		@listaAl = Lista.new
 		@listaGr = Lista.new
+		@v = 0
+
+		if block_given? 
+			if block.arity == 1
+				yield self
+			else
+				instance_eval(&block)
+			end
+		end
 	end
+
+	def ingredient(aliment, options = {})
+		insert_alimento(aliment)
+		insert_gramos("#{options[:amount]}")
+	end
+
 
 	#Inserta un alimento al plato
 	def insert_alimento(alimento)
@@ -229,12 +244,14 @@ class Plato
 	def get_VCT
 		total = 0
 		@listaGr.each do |gramos|
-		total = total + gramos
+			total = total + gramos
 		end
 		prot = (por_proteinas*total)/100
 		lip = (por_lipidos*total)/100
 		car = (por_carbohidratos*total)/100
-		return ((prot*4)+(lip*9)+(car*4))
+		@v = ((prot*4)+(lip*9)+(car*4))
+		#return ((prot*4)+(lip*9)+(car*4))
+		return @v
 	end
 
 	#Devuelve la lista de alimentos de cada plato 
@@ -253,7 +270,7 @@ end
 class Ambiental < Plato 
 	include Comparable
 
-	attr_accessor :gas, :ter
+	attr_accessor :gas, :ter, :huella
 	
 	#Devuelve la cantidad de M2 de cada plato de un menú
 	def get_terreno
@@ -332,14 +349,44 @@ class Ambiental < Plato
 	end
 
 	#Compara la huella nutricional de dos menus
-	def <=>(compara)
+	def <=>(other)
 		#nombre <=> compara.nombre
-		huella_nutricional <=> compara.huella_nutricional
+		huella_nutricional <=> other.huella_nutricional
 	end
 
 	#Método para incrementar el precio de un plato según su huella nutricional
-	def incrementar_precio (v)
-		v.collect {|x| x*huella_nutricional}
+	def incrementar_precio (v, p)
+		p.collect {|x| x*(v.huella_nutricional)}
 	end
 
+end
+
+class Menu
+	attr_accessor :nombre, :platos, :precios
+
+	def initialize(name, &block)
+		@nombre = name
+		@platos = Array.new
+		@precios = Array.new
+
+		if block_given?
+			if block.arity == 1
+				yield self
+			else
+				instance_eval(&block)
+			end
+		end
+	end
+
+	def component(platoNuevo)
+		@platos.push(platoNuevo)
+	end
+
+	def precio(price)
+		@precios.push(price)
+	end
+
+	def to_s
+		@platos.collect { |x| x.to_s}
+	end
 end

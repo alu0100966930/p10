@@ -37,6 +37,7 @@ RSpec.describe P6 do
 		@ambiental2.insert_alimento(@queso)
 		@ambiental2.insert_gramos(200)
 
+		#menú con diferentes platos
 		@menu1 = Array.new
 		@menu1.push(@ambiental1)
 		@menu1.push(@ambiental2)
@@ -45,7 +46,34 @@ RSpec.describe P6 do
 		@precio1.push(9.95)
 		@precio1.push(5.5)
 
-	end
+		@plate1 = Plato.new("Lentejas") do 
+			lentejas = Alimentos.new("lentejas", 23.5, 52.0, 1.4, 0.4, 3.4)
+			ingredient @lentejas, :amount => 500
+		end
+
+		@plate2 = Plato.new("Salmón") do 
+			ingredient @salmon, :amount => 250
+		end
+
+		@menu2 = Menu.new("Primer menú") do 
+			primerPlato = Plato.new("Lentejas") do
+				ingredient @lentejas, :amount => 200
+			end
+
+			segundoPlato = Plato.new("Salmón y tofu") do 
+				ingredient @salmon, :amount => 150
+				ingredient @tofu, :amount => 100
+			end
+
+			component primerPlato
+			precio 5.00
+
+			component segundoPlato
+			precio 9.90
+		end
+
+	end       
+
 
 	context "Los alimentos deben" do
 		it "tener un nombre" do
@@ -174,7 +202,7 @@ RSpec.describe P6 do
 			expect(@menu1.max).to eq(@ambiental1)
 		end
 		it "incrementar el precio" do 
-			expect(@menu1.max.incrementar_precio(@precio1)).to eq([19.9, 11.0])
+			expect(@menu1.max.incrementar_precio(@menu1.max, @precio1)).to eq([19.9, 11.0])
 		end
 	end
 end
