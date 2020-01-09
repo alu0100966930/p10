@@ -48,16 +48,16 @@ RSpec.describe P6 do
 
 		@plate1 = PlatoDSL.new("lentejas") do 
 			lentejas = Alimentos.new("lentejas", 23.5, 52.0, 1.4, 0.4, 3.4)
-			ingredient @lentejas
+			ingredient lentejas
 			quantity 500
 		end
 
-		@plate2 = Plato.new("salmón con tofu") do
+		@plate2 = PlatoDSL.new("salmón con tofu") do
 			salmon = Alimentos.new("salmon", 19.9, 0.0, 13.6, 6.0, 3.7)
 			tofu = Alimentos.new("tofu", 8.0, 1.9, 4.8, 2.0, 2.2)	
-			ingredient @salmon
+			ingredient salmon
 			quantity 150
-			ingredient @tofu
+			ingredient tofu
 			quantity 150
 		end
 
@@ -68,13 +68,13 @@ RSpec.describe P6 do
 			quantity 300
 			end
 
-			segundoPlato = Plato.new("salmón con tofu") do 
+			segundoPlato = PlatoDSL.new("salmón con tofu") do 
 				salmon = Alimentos.new("salmon", 19.9, 0.0, 13.6, 6.0, 3.7)
 				tofu = Alimentos.new("tofu", 8.0, 1.9, 4.8, 2.0, 2.2)
 				
-				ingredient @salmon
+				ingredient salmon
 				quantity 200
-				ingredient @tofu
+				ingredient tofu
 				quantity 150
 			end
 
@@ -90,7 +90,7 @@ RSpec.describe P6 do
 	context "Que el DSL funcione" do 
 		it "con los platos" do 
 			expect(@plate1.nombre).to eq("lentejas")
-			expect(@plate1.get_VCT).to eq(25)
+			expect(@plate1.get_VCT).to eq(7865.0)
 		end
 
 		it "con los menus" do 

@@ -422,7 +422,7 @@ class PlatoDSL
 			@listaAl.each do |element|
 				j = j + 1
 				if(i == j)
-					p = p + gr*element.get_proteina/100
+					p = p + gr*element.proteina/100
 				end
 			end
 			j = 0
@@ -451,7 +451,7 @@ class PlatoDSL
 		c = 0
 		i = 0
 		j = 0
-		@listagr.each do |gramos|
+		@listaGr.each do |gramos|
 			gr = gramos
 			i = i + 1
 			@listaAl.each do |element|
