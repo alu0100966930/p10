@@ -1,8 +1,12 @@
 /.bundle/
 /.yardoc
 /_yardoc/
+<<<<<<< HEAD
 /coverage/
 /pkg/
+=======
+/doc/
+>>>>>>> doc
 /spec/reports/
 /tmp/
 
